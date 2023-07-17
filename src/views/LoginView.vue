@@ -1,6 +1,6 @@
 <template>
   <div class="flex h-screen">
-    <div class="m-auto w-1/3">
+    <div class="m-auto w-full md:w-1/3 px-4">
       <div class="bg-white p-8 rounded shadow-md">
         <h2 class="text-2xl font-bold mb-6"><i class="fa-solid fa-music mr-2"></i>TopTunes</h2>
         <button
