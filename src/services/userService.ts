@@ -6,19 +6,14 @@ import type { UserTopItemsType } from '@/types/userTopItemsType';
 import { UserTopItemsTimeRange } from '@/types/userTopItemsTimeRange';
 
 export class UserService {
-  static async fetchProfile(): Promise<UserProfile | null> {
+  static async fetchProfile(): Promise<UserProfile> {
     const authStore = useAuthStore();
-    let response = null;
 
-    try {
-      response = await axios.get<UserProfile>('https://api.spotify.com/v1/me', {
-        headers: {
-          Authorization: 'Bearer ' + authStore.accessToken
-        }
-      });
-    } catch (error: any) {
-      console.error(error);
-    }
+    const response = await axios.get<UserProfile>('https://api.spotify.com/v1/me', {
+      headers: {
+        Authorization: 'Bearer ' + authStore.accessToken
+      }
+    });
 
     return response.data;
   }
@@ -28,25 +23,23 @@ export class UserService {
     timeRange: UserTopItemsTimeRange = UserTopItemsTimeRange.MEDIUM_TERM,
     limit: number = 20,
     offset: number = 5
-  ): Promise<UserTopItems | null> {
+  ): Promise<UserTopItems> {
     const authStore = useAuthStore();
-    let response = null;
 
-    try {
-      const args = new URLSearchParams({
-        time_range: timeRange,
-        limit: limit.toString(),
-        offset: offset.toString()
-      });
+    const args = new URLSearchParams({
+      time_range: timeRange,
+      limit: limit.toString(),
+      offset: offset.toString()
+    });
 
-      response = await axios.get(`https://api.spotify.com/v1/me/top/${type}?` + args, {
+    const response = await axios.get<UserTopItems>(
+      `https://api.spotify.com/v1/me/top/${type}?` + args,
+      {
         headers: {
           Authorization: 'Bearer ' + authStore.accessToken
         }
-      });
-    } catch (error: any) {
-      console.error(error);
-    }
+      }
+    );
 
     return response.data;
   }
